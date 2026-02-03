@@ -45,10 +45,10 @@ const getInputs = (): Inputs => {
     headBranch: github.context.payload.pull_request?.head.ref || "",
     maxBehindBy: 0,
   };
-  if (inputs.files.size === 0) {
-    throw new Error("files is required");
-  }
   const maxBehindBy = core.getInput("max_behind_by");
+  if (inputs.files.size === 0 && maxBehindBy === "") {
+    throw new Error("Either files or max_behind_by is required");
+  }
   if (maxBehindBy) {
     inputs.maxBehindBy = parseInt(maxBehindBy);
   }

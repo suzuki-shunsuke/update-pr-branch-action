@@ -7,7 +7,7 @@ branding:
   color: blue
 
 inputs:
-  # Required
+  # Optional
   files:
     description: |
       Check if these files are updated in the base branch.
@@ -15,9 +15,19 @@ inputs:
       Lines starting with '#' are ignored.
       Lines with only whitespace are ignored.
       Each line is a pattern of https://github.com/isaacs/minimatch
-    required: true
 
-  # Optional
+      Either `files` or `max_behind_by` must be specified.
+    required: true
+  max_behind_by:
+    description: |
+      Limit of behind_by.
+      If the base branch is ahead of the head branch by at least `max_behind_by` commits, the branch is updated.
+      For example, if max_behind_by is 0, the head branch must be up-to-date with the base branch.
+      By default, there is no limit
+
+      Either `files` or `max_behind_by` must be specified.
+    required: false
+
   repository:
     description: |
       A Pushed repository.
@@ -63,12 +73,6 @@ inputs:
   csm_app_private_key:
     description: |
       GitHub App Private Key for csm-actions/update-branch-action
-    required: false
-  max_behind_by:
-    description: |
-      Limit of behind_by.
-      If the base branch is ahead of the head branch by at least `max_behind_by` commits, the branch is updated.
-      By default, there is no limit
     required: false
 
 runs:
