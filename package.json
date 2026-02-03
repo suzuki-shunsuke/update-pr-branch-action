@@ -1,0 +1,27 @@
+{
+  "type": "module",
+  "scripts": {
+    "build": "ncc build src/index.ts --license LICENSE",
+    "fmt": "prettier --write .",
+    "test": "vitest --run",
+    "test:coverage": "vitest --run --coverage",
+    "lint": "eslint && tsc --noEmit",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@actions/core": "^3.0.0",
+    "@actions/github": "6.0.1",
+    "@csm-actions/update-branch-action": "npm:@jsr/csm-actions__update-branch-action@^0.0.2",
+    "@octokit/rest": "^22.0.0",
+    "@suzuki-shunsuke/github-app-token": "npm:@jsr/suzuki-shunsuke__github-app-token@^0.0.3",
+    "minimatch": "^10.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "20.19.30",
+    "@types/tmp": "0.2.6",
+    "@vercel/ncc": "0.38.4",
+    "prettier": "3.8.1",
+    "ts-node": "10.9.2",
+    "typescript": "5.9.3"
+  }
+}
