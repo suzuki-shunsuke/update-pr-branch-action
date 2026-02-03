@@ -29,7 +29,7 @@ See [action.yaml](action.yaml).
 ## Hot It Works
 
 1. [Call GitHub's Compare Two Commits API](https://docs.github.com/en/rest/commits/commits#compare-two-commits)
-    1. Compare the pull request base branch and head branch
+   1. Compare the pull request base branch and head branch
 1. If some of given files are updated in the base branch, update the pull request branch
 
 ## GitHub Access Tokens
@@ -45,13 +45,13 @@ See [action.yaml](action.yaml).
   - `contents: read`
 - Repositories
   - `GITHUB_REPOSITORY`
-  
+
 Priority:
 
 1. github_token
 1. GitHub App (app_id, app_private_key)
 1. default_github_token
-  
+
 ### 2. Update Branch
 
 Update pull request branch API
@@ -69,7 +69,7 @@ Update Branch by csm-actions/update-branch-action:
 - Repositories
   - `GITHUB_REPOSITORY`
   - `csm_server`
-  
+
 Priority:
 
 1. csm-action/update-branch-action
