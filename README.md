@@ -2,7 +2,7 @@
 
 [action.yaml](action.yaml)
 
-`update-branch-action` is a GitHub Action that updates a pull request branch when the head branch is too far behind the base branch, or when certain specified files are updated in the base branch.
+`update-pr-branch-action` is a GitHub Action that updates a pull request branch when the head branch is too far behind the base branch, or when certain specified files are updated in the base branch.
 
 ```yaml
 ---
@@ -14,7 +14,7 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: suzuki-shunsuke/update-branch-action@latest
+      - uses: suzuki-shunsuke/update-pr-branch-action@latest
         with:
           app_id: ${{ vars.APP_ID }}
           app_private_key: ${{ secrets.APP_PRIVATE_KEY }}
