@@ -1,0 +1,80 @@
+name: PR Branch Updater
+description: Updates a pull request branch when the head branch is too far behind the base branch, or when certain specified files are updated in the base branch
+author: Shunsuke Suzuki
+
+branding:
+  icon: git-commit
+  color: blue
+
+inputs:
+  # Optional
+  files:
+    description: |
+      Check if these files are updated in the base branch.
+      To specify multiple files, separate them with a newline.
+      Lines starting with '#' are ignored.
+      Lines with only whitespace are ignored.
+      Each line is a pattern of https://github.com/isaacs/minimatch
+
+      Either `files` or `max_behind_by` must be specified.
+    required: true
+  max_behind_by:
+    description: |
+      Limit of behind_by.
+      If the base branch is ahead of the head branch by at least `max_behind_by` commits, the branch is updated.
+      For example, if max_behind_by is 0, the head branch must be up-to-date with the base branch.
+      By default, there is no limit
+
+      Either `files` or `max_behind_by` must be specified.
+    required: false
+
+  repository:
+    description: |
+      A Pushed repository.
+      By default, GITHUB_REPOSITORY is used.
+      If the repository includes a slash (/), it is treated as a full repository name.
+      Otherwise, it is treated as a repository name in the current owner.
+    required: false
+  pr_number:
+    description: |
+      The pull request number.
+    required: false
+
+  # GitHub Access Token
+  github_token:
+    description: |
+      GitHub Access Token.
+    required: false
+  default_github_token:
+    description: |
+      A default GitHub Access Token.
+    required: false
+    default: ${{ github.token }}
+  app_id:
+    description: |
+      GitHub App ID
+    required: false
+  app_private_key:
+    description: |
+      GitHub App Private Key
+    required: false
+
+  # csm-actions/update-branch-action
+  csm_server:
+    description: |
+      Server repository of csm-actions/update-branch-action.
+      If the repository includes a slash (/), it is treated as a full repository name.
+      Otherwise, it is treated as a repository name in the current owner.
+    required: false
+  csm_app_id:
+    description: |
+      GitHub App ID for csm-actions/update-branch-action
+    required: false
+  csm_app_private_key:
+    description: |
+      GitHub App Private Key for csm-actions/update-branch-action
+    required: false
+
+runs:
+  using: "node20"
+  main: "dist/index.js"
