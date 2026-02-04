@@ -131,7 +131,7 @@ const compareCommits = async (
   });
   return {
     files: commits.files ?? [],
-    behindBy: commits.behind_by,
+    behindBy: commits.ahead_by, // This is not a bug.
   };
 };
 
