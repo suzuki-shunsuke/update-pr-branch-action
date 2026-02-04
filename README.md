@@ -42,9 +42,14 @@ See [action.yaml](action.yaml).
 
 ## Hot It Works
 
+1. Get a pull request by GitHub API if the pull request number is specified
 1. [Call GitHub's Compare Two Commits API](https://docs.github.com/en/rest/commits/commits#compare-two-commits)
    1. Compare the pull request base branch and head branch
-1. If some of given files are updated in the base branch, update the pull request branch
+1. If the head branch is too far behind the base branch or some of given files are updated in the base branch, update the pull request branch
+1. If the branch is updated and the pull request number is the same as the context pull request number, fail the action
+
+This action doesn't use `git`, and doesn't depend on the current working directory.
+So you don't need to checkout the repository.
 
 ## GitHub Access Tokens
 

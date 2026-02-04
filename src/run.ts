@@ -20,6 +20,7 @@ type Inputs = {
   csmAppPrivateKey: string;
   baseBranch: string;
   headBranch: string;
+  contextPRNumber: number;
 };
 
 const getInputs = (): Inputs => {
@@ -45,6 +46,7 @@ const getInputs = (): Inputs => {
     baseBranch: github.context.payload.pull_request?.base.ref || "",
     headBranch: github.context.payload.pull_request?.head.ref || "",
     maxBehindBy: 0,
+    contextPRNumber: github.context.issue.number,
   };
   const maxBehindBy = core.getInput("max_behind_by");
   if (inputs.files.size === 0 && maxBehindBy === "") {
@@ -182,9 +184,14 @@ const run = async (inputs: Inputs) => {
   const compareResult = await compareCommits(octokit, inputs);
   if (!checkUpdated([...inputs.files], compareResult, inputs.maxBehindBy)) {
     core.info("skip updating branch");
+    core.setOutput("updated", false);
     return;
   }
   await updateBranch(octokit, inputs);
+  core.setOutput("updated", true);
+  if (inputs.prNumber === inputs.contextPRNumber) {
+    core.setFailed("PR branch is updated");
+  }
 };
 
 const updateBranch = async (

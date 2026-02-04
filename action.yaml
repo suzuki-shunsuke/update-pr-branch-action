@@ -74,6 +74,10 @@ inputs:
     description: |
       GitHub App Private Key for csm-actions/update-branch-action
     required: false
+outputs:
+  updated:
+    description: |
+      Whether the branch is updated.
 
 runs:
   using: "node20"
