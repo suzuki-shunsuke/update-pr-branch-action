@@ -6,7 +6,7 @@ export const main = async () => {
   const inputs = getInputs();
   const result = await updatePRBranch(inputs);
   core.setOutput("updated", result.updated);
-  if (inputs.prNumber === inputs.contextPRNumber) {
+  if (result.updated && inputs.prNumber === inputs.contextPRNumber) {
     core.setFailed("PR branch is updated");
   }
 };
