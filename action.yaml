@@ -1,4 +1,4 @@
-name: Update pull request branch
+name: PR Branch Updater
 description: Updates a pull request branch when the head branch is too far behind the base branch, or when certain specified files are updated in the base branch
 author: Shunsuke Suzuki
 
