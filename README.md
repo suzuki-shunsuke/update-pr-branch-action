@@ -107,3 +107,8 @@ But you can also update a branch securely using [csm-actions/update-branch-actio
     csm_app_id: ${{ vars.CSM_APP_ID }}
     csm_app_private_key: ${{ secrets.CSM_APP_PRIVATE_KEY }}
 ```
+
+## Available versions
+
+The main branch and feature branches don't work.
+[Please see the document](https://github.com/suzuki-shunsuke/release-js-action/blob/main/docs/available_versions.md).
