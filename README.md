@@ -49,6 +49,16 @@ See [action.yaml](action.yaml).
 This action doesn't use `git`, and doesn't depend on the current working directory.
 So you don't need to checkout the repository.
 
+## :warning: Limitations
+
+This action uses [the Compare Two Commits GitHub API](https://docs.github.com/en/rest/commits/commits?apiVersion=2022-11-28#compare-two-commits) to retrieve files changed between the base and head branches.
+Due to limitations of this API, it can only return up to 300 files.
+
+> The list of changed files is only shown on the first page of results, and it includes up to 300 changed files for the entire comparison.
+
+As a result, if more than 300 files have changed, the branch may not be updated even if files matching the `files` input were actually modified.
+Setting the `max_behind_by` input can help mitigate this issue to some extent.
+
 ## GitHub Access Tokens
 
 - github_token
