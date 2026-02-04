@@ -4,7 +4,7 @@ import * as githubAppToken from "@suzuki-shunsuke/github-app-token";
 import { Inputs, getInputs } from "./input";
 import { compareCommits } from "./compare";
 import { updateBranch } from "./update_branch";
-import { tokens, getToken } from "./github_token";
+import { getToken, revoke } from "./github_token";
 import { getPullRequest } from "./get_pr";
 import { checkUpdated } from "./check";
 
@@ -13,14 +13,7 @@ export const main = async () => {
     const inputs = getInputs();
     await run(inputs);
   } finally {
-    for (const token of tokens) {
-      if (githubAppToken.hasExpired(token.expiresAt)) {
-        core.info("skip revoking GitHub App token as it has already expired");
-        continue;
-      }
-      core.info("revoking GitHub App token");
-      await githubAppToken.revoke(token.token);
-    }
+    await revoke();
   }
 };
 
