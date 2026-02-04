@@ -91,7 +91,7 @@ const filterFiles = (files: string[]): Set<string> => {
   return new Set(
     files
       .map((file) => file.trim())
-      .filter((file) => file !== "" && file.startsWith("#")),
+      .filter((file) => file !== "" && !file.startsWith("#")),
   );
 };
 
