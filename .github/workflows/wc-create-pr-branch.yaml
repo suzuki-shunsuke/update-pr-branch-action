@@ -43,6 +43,8 @@ jobs:
 
       # Test
       - uses: ./
+        if: inputs.pr != ''
         with:
+          pr_number: ${{inputs.pr}}
           files: |
             foo
