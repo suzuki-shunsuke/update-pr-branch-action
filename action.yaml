@@ -1,7 +1,7 @@
 name: PR Branch Updater
-description: Updates a pull request branch when the head branch is too far behind the base branch, or when certain specified files are updated in the base branch
+description: |
+  Updates a pull request branch when it's too far behind the base branch, or when given files are outdated
 author: Shunsuke Suzuki
-
 branding:
   icon: git-commit
   color: blue
