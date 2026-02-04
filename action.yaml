@@ -74,6 +74,15 @@ inputs:
     description: |
       GitHub App Private Key for csm-actions/update-branch-action
     required: false
+
+  update_if_300_files:
+    description: |
+      Whether to update the branch if there are more than 300 files.
+      This is necessary because GitHub API can't return more than 300 files.
+      By default, this is true if the input files is set.
+      Otherwise, this is false by default.
+    required: false
+
 outputs:
   updated:
     description: |

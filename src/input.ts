@@ -1,24 +1,6 @@
 import * as core from "@actions/core";
 import * as github from "@actions/github";
-
-export type Inputs = {
-  files: Set<string>;
-  repoOwner: string;
-  repoName: string;
-  prNumber: number;
-  maxBehindBy: number;
-  githubToken: string;
-  defaultGitHubToken: string;
-  appID: string;
-  appPrivateKey: string;
-  csmServerRepoOwner: string;
-  csmServerRepoName: string;
-  csmAppID: string;
-  csmAppPrivateKey: string;
-  baseBranch: string;
-  headBranch: string;
-  contextPRNumber: number;
-};
+import { Inputs } from "@suzuki-shunsuke/update-pr-branch";
 
 const filterFiles = (files: string[]): Set<string> => {
   return new Set(
@@ -35,8 +17,10 @@ export const getInputs = (): Inputs => {
   const keyCSMAppID = "csm_app_id";
   const keyCSMAppPrivateKey = "csm_app_private_key";
 
+  const files = filterFiles(core.getMultilineInput("files"));
+
   const inputs: Inputs = {
-    files: filterFiles(core.getMultilineInput("files")),
+    files: files,
     repoOwner: github.context.repo.owner,
     repoName: core.getInput("repo") || github.context.repo.repo,
     prNumber: github.context.issue.number,
@@ -52,6 +36,10 @@ export const getInputs = (): Inputs => {
     headBranch: github.context.payload.pull_request?.head.ref || "",
     maxBehindBy: -1,
     contextPRNumber: github.context.issue.number,
+    updateIf300Files:
+      core.getInput("update_if_300_files") === ""
+        ? files.size !== 0
+        : core.getBooleanInput("update_if_300_files"),
   };
   const maxBehindBy = core.getInput("max_behind_by");
   if (inputs.files.size === 0 && maxBehindBy === "") {
