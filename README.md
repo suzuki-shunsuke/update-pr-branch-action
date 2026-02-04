@@ -16,11 +16,23 @@ jobs:
     steps:
       - uses: suzuki-shunsuke/update-branch-action@latest
         with:
-          files: |
-            foo/**
           app_id: ${{ vars.APP_ID }}
           app_private_key: ${{ secrets.APP_PRIVATE_KEY }}
+          max_behind_by: 100
+          files: |
+            foo/**
 ```
+
+## Motivation
+
+When a PR’s feature branch is outdated compared to the base branch, it can cause issues in CI.
+However, enabling `Require branches to be up to date before merging` in branch rulesets can hurt developer productivity—especially in large monorepos.
+
+This action automatically updates the head branch only when it is significantly behind the base branch, or when specific files in the base branch have been updated.
+This keeps the head branch fresh while avoiding unnecessary updates.
+
+One common use case is monorepos.
+In monorepo CI workflows that run tasks such as automatic code formatting only for directories changed in a pull request, updating the branch when those directories have changed in the base branch helps prevent inconsistent or unexpected formatting results.
 
 ## Inputs / Outputs
 

@@ -60,7 +60,7 @@ inputs:
     required: false
 
   # csm-actions/update-branch-action
-  csm_action_server:
+  csm_server:
     description: |
       Server repository of csm-actions/update-branch-action.
       If the repository includes a slash (/), it is treated as a full repository name.

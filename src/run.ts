@@ -14,10 +14,10 @@ type Inputs = {
   defaultGitHubToken: string;
   appID: string;
   appPrivateKey: string;
-  securefixActionServerRepoOwner: string;
-  securefixActionServerRepoName: string;
-  securefixAppID: string;
-  securefixAppPrivateKey: string;
+  csmServerRepoOwner: string;
+  csmServerRepoName: string;
+  csmAppID: string;
+  csmAppPrivateKey: string;
   baseBranch: string;
   headBranch: string;
 };
@@ -25,8 +25,9 @@ type Inputs = {
 const getInputs = (): Inputs => {
   const keyAppID = "app_id";
   const keyAppPrivateKey = "app_private_key";
-  const keySecurefixAppID = "securefix_app_id";
-  const keySecurefixAppPrivateKey = "securefix_app_private_key";
+  // CSM = Client/Server Model
+  const keyCSMAppID = "csm_app_id";
+  const keyCSMAppPrivateKey = "csm_app_private_key";
 
   const inputs: Inputs = {
     files: filterFiles(core.getMultilineInput("files")),
@@ -37,10 +38,10 @@ const getInputs = (): Inputs => {
     defaultGitHubToken: core.getInput("default_github_token"),
     appID: core.getInput(keyAppID),
     appPrivateKey: core.getInput(keyAppPrivateKey),
-    securefixActionServerRepoOwner: github.context.repo.owner,
-    securefixActionServerRepoName: core.getInput("securefix_action_server"),
-    securefixAppID: core.getInput(keySecurefixAppID),
-    securefixAppPrivateKey: core.getInput(keySecurefixAppPrivateKey),
+    csmServerRepoOwner: github.context.repo.owner,
+    csmServerRepoName: core.getInput("csm_server"),
+    csmAppID: core.getInput(keyCSMAppID),
+    csmAppPrivateKey: core.getInput(keyCSMAppPrivateKey),
     baseBranch: github.context.payload.pull_request?.base.ref || "",
     headBranch: github.context.payload.pull_request?.head.ref || "",
     maxBehindBy: 0,
@@ -58,9 +59,9 @@ const getInputs = (): Inputs => {
       `${keyAppID} is required when ${keyAppPrivateKey} is provided`,
     );
   }
-  if (inputs.securefixAppPrivateKey && !inputs.securefixAppID) {
+  if (inputs.csmAppPrivateKey && !inputs.csmAppID) {
     throw new Error(
-      `${keySecurefixAppID} is required when ${keySecurefixAppPrivateKey} is provided`,
+      `${keyCSMAppID} is required when ${keyCSMAppPrivateKey} is provided`,
     );
   }
 
@@ -78,11 +79,9 @@ const getInputs = (): Inputs => {
       "failed to get pr number. The action is not triggered by a pull request and the input pr_number is missing.",
     );
   }
-  if (inputs.securefixActionServerRepoName.includes("/")) {
-    inputs.securefixActionServerRepoOwner =
-      inputs.securefixActionServerRepoName.split("/")[0];
-    inputs.securefixActionServerRepoName =
-      inputs.securefixActionServerRepoName.split("/")[1];
+  if (inputs.csmServerRepoName.includes("/")) {
+    inputs.csmServerRepoOwner = inputs.csmServerRepoName.split("/")[0];
+    inputs.csmServerRepoName = inputs.csmServerRepoName.split("/")[1];
   }
   return inputs;
 };
@@ -171,7 +170,7 @@ const run = async (inputs: Inputs) => {
       actions: {
         // TODO
         getPR: inputs.baseBranch === "",
-        updateBranch: inputs.securefixAppPrivateKey === "",
+        updateBranch: inputs.csmAppPrivateKey === "",
       },
     }),
   );
@@ -192,12 +191,12 @@ const updateBranch = async (
   octokit: ReturnType<typeof github.getOctokit>,
   inputs: Inputs,
 ) => {
-  if (inputs.securefixAppPrivateKey) {
+  if (inputs.csmAppPrivateKey) {
     await updateBranchAction({
-      appID: inputs.securefixAppID,
-      appPrivateKey: inputs.securefixAppPrivateKey,
-      serverRepositoryName: inputs.securefixActionServerRepoName,
-      serverRepositoryOwner: inputs.securefixActionServerRepoOwner,
+      appID: inputs.csmAppID,
+      appPrivateKey: inputs.csmAppPrivateKey,
+      serverRepositoryName: inputs.csmServerRepoName,
+      serverRepositoryOwner: inputs.csmServerRepoOwner,
       owner: inputs.repoOwner,
       repo: inputs.repoName,
       pullRequestNumber: inputs.prNumber,
