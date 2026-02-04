@@ -45,7 +45,7 @@ const getInputs = (): Inputs => {
     csmAppPrivateKey: core.getInput(keyCSMAppPrivateKey),
     baseBranch: github.context.payload.pull_request?.base.ref || "",
     headBranch: github.context.payload.pull_request?.head.ref || "",
-    maxBehindBy: 0,
+    maxBehindBy: -1,
     contextPRNumber: github.context.issue.number,
   };
   const maxBehindBy = core.getInput("max_behind_by");
@@ -234,7 +234,8 @@ const checkUpdated = (
   compareResult: CompareResult,
   maxBehindBy: number,
 ): boolean => {
-  if (compareResult.behindBy > maxBehindBy) {
+  if (maxBehindBy >= 0 && compareResult.behindBy > maxBehindBy) {
+    // If maxBehindBy is negative, it means no limit is set
     core.info(
       `Branch is behind by ${compareResult.behindBy} commits (limit: ${maxBehindBy})`,
     );
