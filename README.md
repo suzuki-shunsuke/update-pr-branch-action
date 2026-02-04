@@ -62,6 +62,65 @@ If the input `update_if_300_files` is `true`, the action updates the branch if m
 If the input `files` is set, `update_if_300_files` is `true` by default.
 Otherwise, `update_if_300_files` is `false` by default.
 
+## Usage
+
+All inputs are optional.
+Either `max_behind_by` or `files` is required.
+
+### 1. `max_behind_by: 0`: Enforce the branch is up-to-date.
+
+```yaml
+- uses: suzuki-shunsuke/update-pr-branch-action@latest
+  with:
+    # By default, ${{github.token}} is used to update branches.
+    # The permission `contents:write` and `pull-requests:write` are required.
+    max_behind_by: 0 # Enforce the branch is up-to-date
+```
+
+### 2. Update branch if files on `foo` are modified in the base branch.
+
+Each line of the input `files` is a pattern of [minimatch](https://github.com/isaacs/minimatch).
+
+```yaml
+- uses: suzuki-shunsuke/update-pr-branch-action@latest
+  with:
+    github_token: ${{secrets.PERSONAL_ACCESS_TOKEN}} # Use a personal access token instead of ${{github.token}}
+    files: |
+      # this is comment
+      foo/**
+```
+
+### 3. Use GitHub App installation access token
+
+```yaml
+- uses: suzuki-shunsuke/update-pr-branch-action@latest
+  with:
+    app_id: ${{vars.APP_ID}}
+    app_private_key: ${{secrets.APP_PRIVATE_KEY}}
+    max_behind_by: 100
+    files: |
+      *.json
+```
+
+### 4. Update Branch by csm-actions/update-branch-action
+
+By default, this action updates a pull request branch by [GitHub's update a pull request branch API](https://docs.github.com/en/rest/pulls/pulls?apiVersion=2022-11-28#update-a-pull-request-branch).
+
+But you can also update a branch securely using [csm-actions/update-branch-action](https://github.com/csm-actions/update-branch-action).
+
+1. [Set up csm-actions/update-branch-action](https://github.com/csm-actions/update-branch-action)
+1. Pass inputs
+
+```yaml
+- uses: suzuki-shunsuke/update-branch-action@latest
+  with:
+    files: |
+      foo/**
+    csm_server: csm-server
+    csm_app_id: ${{ vars.CSM_APP_ID }}
+    csm_app_private_key: ${{ secrets.CSM_APP_PRIVATE_KEY }}
+```
+
 ## GitHub Access Tokens
 
 - github_token
@@ -106,25 +165,6 @@ Priority:
 1. github_token
 1. GitHub App (app_id, app_private_key)
 1. default_github_token
-
-## Update Branch by csm-actions/update-branch-action
-
-By default, this action updates a pull request branch by [GitHub's update a pull request branch API](https://docs.github.com/en/rest/pulls/pulls?apiVersion=2022-11-28#update-a-pull-request-branch).
-
-But you can also update a branch securely using [csm-actions/update-branch-action](https://github.com/csm-actions/update-branch-action).
-
-1. [Set up csm-actions/update-branch-action](https://github.com/csm-actions/update-branch-action)
-1. Pass inputs
-
-```yaml
-- uses: suzuki-shunsuke/update-branch-action@latest
-  with:
-    files: |
-      foo/**
-    csm_server: csm-server
-    csm_app_id: ${{ vars.CSM_APP_ID }}
-    csm_app_private_key: ${{ secrets.CSM_APP_PRIVATE_KEY }}
-```
 
 ## Available versions
 
