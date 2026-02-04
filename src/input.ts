@@ -1,24 +1,6 @@
 import * as core from "@actions/core";
 import * as github from "@actions/github";
-
-export type Inputs = {
-  files: Set<string>;
-  repoOwner: string;
-  repoName: string;
-  prNumber: number;
-  maxBehindBy: number;
-  githubToken: string;
-  defaultGitHubToken: string;
-  appID: string;
-  appPrivateKey: string;
-  csmServerRepoOwner: string;
-  csmServerRepoName: string;
-  csmAppID: string;
-  csmAppPrivateKey: string;
-  baseBranch: string;
-  headBranch: string;
-  contextPRNumber: number;
-};
+import { Inputs } from "@suzuki-shunsuke/update-pr-branch";
 
 const filterFiles = (files: string[]): Set<string> => {
   return new Set(
@@ -52,6 +34,7 @@ export const getInputs = (): Inputs => {
     headBranch: github.context.payload.pull_request?.head.ref || "",
     maxBehindBy: -1,
     contextPRNumber: github.context.issue.number,
+    updateIf300Files: false,
   };
   const maxBehindBy = core.getInput("max_behind_by");
   if (inputs.files.size === 0 && maxBehindBy === "") {
