@@ -105,8 +105,10 @@ export const main = async () => {
   } finally {
     for (const token of tokens) {
       if (githubAppToken.hasExpired(token.expiresAt)) {
+        core.info("skip revoking GitHub App token as it has already expired");
         continue;
       }
+      core.info("revoking GitHub App token");
       await githubAppToken.revoke(token.token);
     }
   }
