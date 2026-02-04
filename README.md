@@ -48,6 +48,9 @@ See [action.yaml](action.yaml).
 1. If the head branch is too far behind the base branch or some of given files are updated in the base branch, update the pull request branch
 1. If the branch is updated and the pull request number is the same as the context pull request number, fail the action
 
+This action doesn't use `git`, and doesn't depend on the current working directory.
+So you don't need to checkout the repository.
+
 ## GitHub Access Tokens
 
 - github_token
