@@ -4,6 +4,8 @@
 
 `update-pr-branch-action` is a GitHub Action that updates a pull request branch when the head branch is too far behind the base branch, or when certain specified files are updated in the base branch.
 
+![image](https://github.com/user-attachments/assets/0a8ed122-1ec9-4b3d-8737-9acdf5b1972c)
+
 ```yaml
 ---
 name: test
