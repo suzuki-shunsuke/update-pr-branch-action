@@ -1,7 +1,18 @@
 import * as core from "@actions/core";
 import * as githubAppToken from "@suzuki-shunsuke/github-app-token";
 
-export const tokens: githubAppToken.Token[] = [];
+const tokens: githubAppToken.Token[] = [];
+
+export const revoke = async (): Promise<void> => {
+  for (const token of tokens) {
+    if (githubAppToken.hasExpired(token.expiresAt)) {
+      core.info("skip revoking GitHub App token as it has already expired");
+      continue;
+    }
+    core.info("revoking GitHub App token");
+    await githubAppToken.revoke(token.token);
+  }
+};
 
 type tokenInput = {
   repo: {
