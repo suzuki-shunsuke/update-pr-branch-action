@@ -105,8 +105,10 @@ export const main = async () => {
   } finally {
     for (const token of tokens) {
       if (githubAppToken.hasExpired(token.expiresAt)) {
+        core.info("skip revoking GitHub App token as it has already expired");
         continue;
       }
+      core.info("revoking GitHub App token");
       await githubAppToken.revoke(token.token);
     }
   }
@@ -122,6 +124,9 @@ const compareCommits = async (
   inputs: Inputs,
 ): Promise<CompareResult> => {
   // TODO pagination
+  core.info(
+    `compare two commits by GitHub API ${inputs.repoOwner}/${inputs.repoName} ${inputs.headBranch}...${inputs.baseBranch}`,
+  );
   const { data: commits } = await octokit.rest.repos.compareCommits({
     owner: inputs.repoOwner,
     repo: inputs.repoName,
@@ -230,7 +235,9 @@ const checkUpdated = (
   maxBehindBy: number,
 ): boolean => {
   if (compareResult.behindBy > maxBehindBy) {
-    core.info(`Branch is behind by ${compareResult.behindBy} commits`);
+    core.info(
+      `Branch is behind by ${compareResult.behindBy} commits (limit: ${maxBehindBy})`,
+    );
     return true;
   }
   for (const commitFile of compareResult.files ?? []) {
