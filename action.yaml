@@ -89,5 +89,5 @@ outputs:
       Whether the branch is updated.
 
 runs:
-  using: "node20"
-  main: "dist/index.js"
+  using: node24
+  main: dist/index.js
