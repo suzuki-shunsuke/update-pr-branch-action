@@ -41,7 +41,7 @@ In monorepo CI workflows that run tasks such as automatic code formatting only f
 
 See [action.yaml](action.yaml).
 
-## Hot It Works
+## How It Works
 
 1. Get a pull request by GitHub API if the pull request number is specified
 1. [Call GitHub's Compare Two Commits API](https://docs.github.com/en/rest/commits/commits#compare-two-commits)
