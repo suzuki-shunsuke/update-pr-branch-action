@@ -115,7 +115,7 @@ But you can also update a branch securely using [csm-actions/update-branch-actio
 1. Pass inputs
 
 ```yaml
-- uses: suzuki-shunsuke/update-branch-action@latest
+- uses: suzuki-shunsuke/update-pr-branch-action@latest
   with:
     files: |
       foo/**
