@@ -14,7 +14,7 @@
     "@csm-actions/update-branch-action": "npm:@jsr/csm-actions__update-branch-action@^0.1.0",
     "@octokit/rest": "^22.0.0",
     "@suzuki-shunsuke/update-pr-branch": "npm:@jsr/suzuki-shunsuke__update-pr-branch@^0.0.4",
-    "minimatch": "^10.1.1"
+    "minimatch": "^11.0.0"
   },
   "devDependencies": {
     "@types/node": "24.19.2",
