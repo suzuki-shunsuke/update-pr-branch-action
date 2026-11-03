@@ -1,0 +1,35 @@
+---
+name: Test
+on:
+  workflow_call:
+    inputs:
+      sha:
+        description: The commit SHA where the action was built
+        required: true
+        type: string
+permissions: {}
+jobs:
+  test:
+    timeout-minutes: 15
+    runs-on: ubuntu-26.04
+    permissions:
+      contents: write # Update the pull request branch
+      pull-requests: write # Update the pull request branch
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          ref: ${{inputs.sha}}
+          persist-credentials: false
+      # The action built by the release job
+      - uses: actions/download-artifact@v8.0.2
+        with:
+          name: dist
+          path: dist
+
+      # The token of pull requests from forks can't update branches
+      - uses: ./
+        if: github.event_name == 'pull_request' && ! github.event.pull_request.head.repo.fork
+        with:
+          pr_number: ${{github.event.pull_request.number}}
+          files: |
+            foo
